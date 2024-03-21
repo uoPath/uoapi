@@ -1,5 +1,13 @@
 # uO API
 
+> [!IMPORTANT] 
+> This fork is a modified, containerized version of [uOAPI](https://github.com/uScheduleMe/uoapi) for updating the backend course details database of [uoPath.me](https://uoPath.me).
+
+[![Build Image](https://github.com/uoPath/uoapi/actions/workflows/build-image.yml/badge.svg)](https://github.com/uoPath/uoapi/actions/workflows/build-image.yml)
+
+<details>
+<summary>Original README</summary>
+
 [![Build shield](https://img.shields.io/github/workflow/status/andrewnags/uoapi/build)](https://github.com/andrewnags/uoapi/actions?query=workflow%3Abuild)
 [![Tags](https://img.shields.io/github/v/tag/andrewnags/uoapi)](https://github.com/andrewnags/uoapi/releases)
 
@@ -42,3 +50,4 @@ See the `COPYING` and `COPYING.LESSER` files for the exact license.
 Generally speaking, LGPL permits use, distribution, and alteration in open source (as long as the licence is propagated),
 and permits use and distribution in closed source projects
 (this is **not** legal advice, just my best personal summary).
+</details>

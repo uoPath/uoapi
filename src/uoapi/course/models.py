@@ -17,7 +17,7 @@ class Course(BaseModel):
     description: str
     components: list[str]
     prerequisites: str
-    dependencies: list[list[str]]
+    dependencies: str # Change the type to str to avoid issues
 
 
 # TODO: Refactor logic in Prereq into this class

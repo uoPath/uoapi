@@ -7,8 +7,8 @@ class Prereq:
     Object used to hold information about prereqs and other information that is provided in the courseblockextra section of the uOttawa catalogue
     '''
     rep_codes = {
-        "credit_count" : "YYY0000",
-        "ForU" : "YYY0001",
+        "credit_count" : "YYY 0000",
+        "ForU" : "YYY 0001",
         "for_special_program" : ") or ("
     }
 
@@ -19,7 +19,11 @@ class Prereq:
         '''
 
         parsable = self.match_to_string(parsable)
+        
+        # we just want the string and we will parse it ourselves in uoPath
+        return parsable
 
+        """
         #Replace all parenthesised groups with a unique fake course code. This makes it possible to look at
         #each group as a single course until we sub them back in later and apply the rules we need for them.
         #Essentially this is priority of operations but it's easier to do them in reverse here
@@ -76,8 +80,7 @@ class Prereq:
                     break
 
         return prereq_groups
-
-
+        """
 
     def match_to_string(self, match_obj):
         '''

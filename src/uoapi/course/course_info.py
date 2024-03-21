@@ -100,6 +100,13 @@ def get_course_from_tag(tag: Tag):
     components = utils.get_description_content(components)
 
     dependencies = Prereq(prereq_string).prereqs
+
+    # since we are changing the type of dependencies from a list to a string in
+    # prereq.py, we need to check if it is an empty list and change it to an
+    # empty string
+    if dependencies == []:
+        dependencies = ''
+
     prerequisites = utils.get_description_content(prereq_string)
 
     return Course(

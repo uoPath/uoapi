@@ -76,7 +76,7 @@ def get_course_from_tag(tag: Tag):
     Returns:
         The course object
     """
-    title_tag = tag.find("p", attrs={"class": "courseblocktitle"})
+    title_tag = tag.find("h3", attrs={"class": "courseblocktitle"})
 
     if title_tag is None:
         raise ValueError("Could not find courseblocktitle")

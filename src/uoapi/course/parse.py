@@ -18,7 +18,7 @@ from typing import (
 )
 
 
-def title_tag(tag: Tag | NavigableString) -> tuple[str, str, int]:
+def title_tag(tag: Tag | NavigableString) -> tuple[str, str, float]:
     """
     Extracts course code, title, and credits from a courseblocktitle tag
     """

@@ -13,7 +13,7 @@ class Subject(BaseModel):
 class Course(BaseModel):
     course_code: str
     title: str
-    credits: int
+    credits: float
     description: str
     components: list[str]
     prerequisites: str

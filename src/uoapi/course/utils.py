@@ -23,22 +23,26 @@ def extract_codes(string: str, return_all: bool = True):
     return ["XXX 0000"]
 
 
-def extract_credits(string: str):
-    """
-    Searches string for a number of credits/units
-    (Assuming the string is the title of a course)
-    Used in get_subjects.ipynb
-    """
-    credits = list(
-        {
-            int(x.group(0).split(" ")[0].strip("("))
-            for x in re.finditer(pt.credit_re, string)
-        }
-    )
-    if len(credits) == 1:
-        return credits[0]
-    return 0
+# def extract_credits(string: str):
+#     """
+#     Searches string for a number of credits/units
+#     (Assuming the string is the title of a course)
+#     Used in get_subjects.ipynb
+#     """
+#     credits = list(
+#         {
+#             float(x.group(0).split(" ")[0].strip("("))
+#             for x in re.finditer(pt.credit_re, string)
+#         }
+#     )
+    
+#     if len(credits) == 1:
+#         return credits[0]
+#     return 0.0
 
+def extract_credits(string: str) -> float:
+    match = re.search(r"\((\d+(?:\.\d+)?)\s*[^\d)]*\)", string)
+    return float(match.group(1)) if match else 0.0
 
 def remove_codes(string: str):
     """

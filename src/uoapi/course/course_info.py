@@ -1,3 +1,4 @@
+import regex as re
 import requests
 from bs4 import (
     BeautifulSoup,
@@ -91,8 +92,19 @@ def get_course_from_tag(tag: Tag):
     )
 
     code, title, credits = parse.title_tag(title_tag)
-    description = parse.description_tag(description_tag)
+    description = parse.description_tag(description_tag)    
     prereq_string, components = parse.extras_blocks(block_tags)
+    
+    cannot_combine = re.findall(
+        r"[^.]*?(?:cannot be combined for units|ne peuvent pas être combinés)[^.]*\.",
+        description,
+        flags=re.IGNORECASE
+    )
+
+    if cannot_combine:
+        prereq_string += " " + " ".join(cannot_combine)
+        for sentence in cannot_combine:
+            description = description.replace(sentence, "").strip()
 
     description += "\n" + components
     description = description.strip()

@@ -69,41 +69,68 @@ def subject_tag(tag: Tag, url_prefix: str):
             raise ValueError(f"Expected strings, got {type(s)} and {type(h)}")
 
 
+# def extras_blocks(tags: list[Tag]) -> tuple[str, str]:
+#     """
+#     Extracts the prerequisites and components
+#     from a list of courseblockextra tags
+
+#     Args:
+#         tags: The list of courseblockextra tags
+
+#     Returns:
+#         A tuple containing the prerequisites and component strings.
+#         If the prerequisites or components are not found, an empty string
+#         is returned for that value.
+#     """
+#     blocks: list[Prerequisite | Component] = []
+
+#     for tag in tags:
+#         block = (
+#             utils.replace_special_spaces(tag.text).strip(".").strip().strip(".").strip()
+#         )
+
+#         if component := Component.try_parse(block):
+#             blocks.append(component)
+#         if prerequisite := Prerequisite.try_parse(block):
+#             blocks.append(prerequisite)
+
+#     match blocks:
+#         case [Prerequisite(content=block)]:
+#             return block, ""
+#         case [Component(content=block)]:
+#             return "", block
+#         case [Prerequisite(content=prereq), Component(content=comp)]:
+#             return prereq, comp
+#         case [Component(content=comp), Prerequisite(content=prereq)]:
+#             return prereq, comp
+#         case _:
+#             return "", ""
+
+#     return "", ""
+
 def extras_blocks(tags: list[Tag]) -> tuple[str, str]:
     """
     Extracts the prerequisites and components
-    from a list of courseblockextra tags
-
-    Args:
-        tags: The list of courseblockextra tags
-
-    Returns:
-        A tuple containing the prerequisites and component strings.
-        If the prerequisites or components are not found, an empty string
-        is returned for that value.
+    from courseblockextra tags.
     """
-    blocks: list[Prerequisite | Component] = []
+
+    prereq_blocks = []
+    component_blocks = []
 
     for tag in tags:
         block = (
-            utils.replace_special_spaces(tag.text).strip(".").strip().strip(".").strip()
+            utils.replace_special_spaces(tag.text)
+            .strip(".")
+            .strip()
+            .strip(".")
+            .strip()
         )
 
         if component := Component.try_parse(block):
-            blocks.append(component)
-        if prerequisite := Prerequisite.try_parse(block):
-            blocks.append(prerequisite)
+            component_blocks.append(component.content)
+        elif prerequisite := Prerequisite.try_parse(block):
+            prereq_blocks.append(prerequisite.content)
+        else:
+            prereq_blocks.append(block)
 
-    match blocks:
-        case [Prerequisite(content=block)]:
-            return block, ""
-        case [Component(content=block)]:
-            return "", block
-        case [Prerequisite(content=prereq), Component(content=comp)]:
-            return prereq, comp
-        case [Component(content=comp), Prerequisite(content=prereq)]:
-            return prereq, comp
-        case _:
-            return "", ""
-
-    return "", ""
+    return " ".join(prereq_blocks), " ".join(component_blocks)

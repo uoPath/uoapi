@@ -2,7 +2,7 @@ from pymongo import MongoClient
 from datetime import datetime, timezone
 import json, sys, os
 
-client = MongoClient(os.getenv("MONGO_URL", "mongodb://localhost:27017"))
+client = MongoClient(os.getenv("MONGO_URL", "mongodb://db:27017"))
 db = client["course"]
 
 file = sys.argv[1]

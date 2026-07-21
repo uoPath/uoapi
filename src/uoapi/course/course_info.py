@@ -96,7 +96,7 @@ def get_course_from_tag(tag: Tag):
     prereq_string, components = parse.extras_blocks(block_tags)
     
     cannot_combine = re.findall(
-        r"[^.]*?(?:cannot be combined for units|ne peuvent pas être combinés)[^.]*\.",
+        r"[^.]*?(?:cannot be combined for units|ne peuvent(?: pas) être combinés)[^.]*\.",
         description,
         flags=re.IGNORECASE
     )

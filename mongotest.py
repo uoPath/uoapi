@@ -6,6 +6,12 @@ mongo_url = os.getenv("MONGO_URL", "mongodb://db:27017")
 client = MongoClient(mongo_url)
 db = client["course"]
 
+try:
+    client.db.command('ping')
+except Exception as e:
+    print(e)
+    sys.exit(1)
+    
 file = sys.argv[1]
 
 data = json.load(sys.stdin)

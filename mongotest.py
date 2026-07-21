@@ -3,7 +3,6 @@ from datetime import datetime, timezone
 import json, sys, os
 
 mongo_url = os.getenv("MONGO_URL", "mongodb://db:27017")
-print(f"Connecting to Mongo: {mongo_url}")
 client = MongoClient(mongo_url)
 db = client["course"]
 

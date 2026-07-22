@@ -100,7 +100,7 @@ def get_course_from_tag(tag: Tag):
         description,
         flags=re.IGNORECASE
     )
-
+    
     if cannot_combine:
         prereq_string += " " + " ".join(cannot_combine)
         for sentence in cannot_combine:

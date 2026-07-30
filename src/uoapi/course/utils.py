@@ -41,7 +41,7 @@ def extract_codes(string: str, return_all: bool = True):
 #     return 0.0
 
 def extract_credits(string: str) -> float:
-    match = re.search(r"\((\d+(?:\.\d+)?)\s*[^\d)]*\)", string)
+    match = re.search(r"\((\d+(?:\.\d+)?)\s*(?:unit[s]?|crédit[s]?)", string)
     return float(match.group(1)) if match else 0.0
 
 def remove_codes(string: str):

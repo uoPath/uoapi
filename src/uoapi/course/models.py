@@ -18,6 +18,7 @@ class Course(BaseModel):
     components: list[str]
     prerequisites: str
     dependencies: str # Change the type to str to avoid issues
+    credit_exclusions: list[str] = [] # credit-exclusion sentences removed from Description; not prerequisites
 
 
 # TODO: Refactor logic in Prereq into this class

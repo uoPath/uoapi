@@ -102,7 +102,11 @@ def get_course_from_tag(tag: Tag):
     )
     
     if cannot_combine:
-        prereq_string += " " + " ".join(cannot_combine)
+        # Do NOT append to prereq_string -- credit-exclusion sentences are not
+        # prerequisites and were corrupting the parser's Equivalencies output
+        # catalog-wide (confirmed Sept 2026, ~531 of 595 affected courses).
+        # Remove from Description (they naturally appear there in the catalog)
+        # and pass separately as credit_exclusions for storage.
         for sentence in cannot_combine:
             description = description.replace(sentence, "").strip()
 
@@ -129,6 +133,7 @@ def get_course_from_tag(tag: Tag):
         dependencies=dependencies,
         components=utils.split_component_parts(components),
         prerequisites=prerequisites,
+        credit_exclusions=cannot_combine,
     )
 
 

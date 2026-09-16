@@ -30,8 +30,6 @@ for c in courses:
         "Components": ", ".join(c.get("components", [])),
         "PrerequisitesText": c.get("prerequisites", ""),
         "CreditExclusions": c.get("credit_exclusions", []),
-        "DependenciesString": c.get("dependencies", ""),
-        "Dependencies": None,
         "ModifiedTime": datetime.now(timezone.utc),
         "AvailableSeason": 7
     }

@@ -96,20 +96,24 @@ def get_course_from_tag(tag: Tag):
     prereq_string, components = parse.extras_blocks(block_tags)
     
     cannot_combine = re.findall(
-        r"[^.]*?(?:cannot be combined for units|ne peuvent(?: pas)? être combinés)[^.]*\.",
+        r"[^.]*?(?:cannot be combined for units|ne peuvent(?: pas)? être combinés)[^.]*\.?",
+        prereq_string,
+        flags=re.IGNORECASE
+    )
+    cannot_combine += re.findall(
+        r"[^.]*?(?:cannot be combined for units|ne peuvent(?: pas)? être combinés)[^.]*\.?",
         description,
         flags=re.IGNORECASE
     )
-    
+
     if cannot_combine:
-        # Do NOT append to prereq_string -- credit-exclusion sentences are not
+        # Do NOT keep in prereq_string or description -- credit-exclusion sentences are not
         # prerequisites and were corrupting the parser's Equivalencies output
         # catalog-wide (confirmed Sept 2026, ~531 of 595 affected courses).
-        # Remove from Description (they naturally appear there in the catalog)
-        # and pass separately as credit_exclusions for storage.
+        # Primary location is prereq_string; description is belt-and-suspenders.
         for sentence in cannot_combine:
+            prereq_string = prereq_string.replace(sentence, "").strip()
             description = description.replace(sentence, "").strip()
-
     description += "\n" + components
     description = description.strip()
 

@@ -96,30 +96,35 @@ def get_course_from_tag(tag: Tag):
     prereq_string, components = parse.extras_blocks(block_tags)
     
     cannot_combine = re.findall(
-        r"[^.]*?(?:cannot be combined for units|ne peuvent(?: pas)? être combinés)[^.]*\.?",
+        r"[^.]*?(?:cannot be combined(?: for (?:units|credits))?|être combiné(?:e|s|es)? avec|ne peu(?:t|vent)(?: pas)? être combinés?)[^.]*\.?",
         prereq_string,
         flags=re.IGNORECASE
     )
     cannot_combine += re.findall(
-        r"[^.]*?(?:cannot be combined for units|ne peuvent(?: pas)? être combinés)[^.]*\.?",
+        r"[^.]*?(?:cannot be combined(?: for (?:units|credits))?|être combiné(?:e|s|es)? avec|ne peu(?:t|vent)(?: pas)? être combinés?)[^.]*\.?",
         description,
         flags=re.IGNORECASE
     )
 
+    # VERBATIM MANTRA: preserve prereq_string and description exactly as the
+    # registrar wrote them. Credit-exclusion sentences are captured into the
+    # credit_exclusions box (above) but are NOT deleted from the source.
+    # Stripping is a downstream ("newsroom") concern: we compute a DERIVED
+    # copy for the Python Prereq() parser only, leaving the stored verbatim
+    # text intact. Note the .NET PrerequisiteExtractor independently discards
+    # credit-exclusion sentences via its own CreditExclusionMarker, so the
+    # verbatim text is safe for the .NET consumer too.
+    prereq_for_parsing = prereq_string
     if cannot_combine:
-        # Do NOT keep in prereq_string or description -- credit-exclusion sentences are not
-        # prerequisites and were corrupting the parser's Equivalencies output
-        # catalog-wide (confirmed Sept 2026, ~531 of 595 affected courses).
-        # Primary location is prereq_string; description is belt-and-suspenders.
         for sentence in cannot_combine:
-            prereq_string = prereq_string.replace(sentence, "").strip()
-            description = description.replace(sentence, "").strip()
-    description += "\n" + components
+            prereq_for_parsing = prereq_for_parsing.replace(sentence, "").strip()
+
+    description = description + "\n" + components
     description = description.strip()
 
     components = utils.get_description_content(components)
 
-    dependencies = Prereq(prereq_string).prereqs
+    dependencies = Prereq(prereq_for_parsing).prereqs
 
     # since we are changing the type of dependencies from a list to a string in
     # prereq.py, we need to check if it is an empty list and change it to an
